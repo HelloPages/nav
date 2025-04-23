@@ -40,3 +40,21 @@ $(document).ready(function(){
     initThemeSwitch();
   });
 });
+
+// 使用Canvas分析图片亮度
+function checkBrightness(imgSrc) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  
+  img.onload = () => {
+    ctx.drawImage(img, 0, 0);
+    const data = ctx.getImageData(0, 0, img.width, img.height).data;
+    let brightness = 0;
+    for(let i=0; i<data.length; i+=4) {
+      brightness += (data[i] + data[i+1] + data[i+2]) / 3;
+    }
+    console.log('平均亮度:', brightness/(data.length/4));
+  };
+  img.src = imgSrc;
+}
